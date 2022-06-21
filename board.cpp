@@ -137,6 +137,7 @@ bool Board::check_winner(char player){
     win_by_diag_2 = true;
     int i = 0;
     int j = 0;
+    int z = 0;
     int k = board_size -1;
 
     for (auto const& [key, val] : grid){
@@ -147,8 +148,9 @@ bool Board::check_winner(char player){
 
     for (int i=0; i<board_size; i++){
         for (int j=0; j<board_size; j++){
-            k+=1;
-            space[i][j] = int(store[k]);
+            z+=1;
+            space[i][j] = int(store[z]);
+            cout << space[i][j] << "\n";
             }
     }
     //----------------------------------------------------------
