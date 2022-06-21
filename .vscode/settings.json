@@ -4,6 +4,15 @@
         "unordered_map": "cpp",
         "map": "cpp",
         "__node_handle": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "string": "cpp",
+        "__bit_reference": "cpp",
+        "__string": "cpp",
+        "algorithm": "cpp",
+        "ios": "cpp",
+        "type_traits": "cpp",
+        "__hash_table": "cpp",
+        "__tree": "cpp",
+        "string_view": "cpp"
     }
 }

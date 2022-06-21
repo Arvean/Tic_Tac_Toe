@@ -1,13 +1,14 @@
+#ifndef BOARD_H
+#define BOARD_H
 #include <iostream>
 using namespace std;
 #include <string>
 #include <map>
-#include <unordered_map>
 #include <iterator>
 #include <vector>
 
 class Board{
-    // Tic-Tac-Toe Board Class definitino. This class will make
+    // Tic-Tac-Toe Board class declaration. This class will make
     // and print user specified dimensioned square board, take moves by two players,
     // enforce the rules of the game, and determine a result (win, tie)
     public:
@@ -31,3 +32,4 @@ class Board{
         bool checkbounds(int move);
         bool check_location(int move, char player);
 };
+#endif //BOARD_H

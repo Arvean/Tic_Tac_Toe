@@ -1,5 +1,7 @@
 #include "Board.h"
 
+// Tic Tac Toe Board class class definition
+
 Board::Board(){
     // Board constructor. Default board size if no parameter is specified by user
     // is 3X3.
@@ -13,7 +15,8 @@ Board::Board(int inBoard){
 
 void Board::createGrid(){
     // Create the grid based on the board size specified in the constructor
-    for (int i=0; i<board_size; i++){
+    grid_size = board_size * board_size;
+    for (int i=0; i<grid_size; i++){
         char c = i;
         grid[i] = c;
     }
@@ -25,28 +28,33 @@ void Board::printGameBoard(){
     int i = 0;
     int j = 0;
     int k = 0;
-    int grid_size = board_size * board_size;
-    int space[board_size][board_size];
-    int store[grid_size];
-
+    char space[board_size][board_size];
+    char store[grid_size];
     for (auto const& [key, val] : grid){
         store[i] = val;
         i+=1;
     }
-
     for (int i=0; i<board_size; i++){
         for (int j=0; j<board_size; j++){
-            k+=1;
             space[i][j] = store[k];
+            k+=1;
             }
     }
-
     string vertical_lines = "      |      |      \n";
     string horizantal_lines =  "______|______|______\n";
         for (int i=0; i<board_size; i++){
             cout<< vertical_lines;
             for (int j=0; j<board_size; j++){
-                cout<< "   " << space[i][j] << "   ";
+                int output = int(space[i][j]); // No way to print char so converted ascii O and X to strings
+                if (output == 79){
+                    cout<< "   " << 'O' << "   ";
+                }
+                else if (output == 88){
+                    cout<< "   " << 'X' << "   ";
+                }
+                else{
+                    cout<< "   " << output << "   ";
+                }
             }
             cout << "   \n";
             cout << horizantal_lines;
@@ -58,7 +66,7 @@ void Board::takeMove(char player){
     //Take the move (int) and check if the move is legal. If move legal,
     // update the grid with the move
     while(valid == false){
-        cout<< "Player " << player << "Turn \n";
+        cout<< "Player " << player << " Turn \n";
         if (player == 'X'){
             cout<< "Choose a location to place a X \n";
         }
@@ -74,6 +82,7 @@ void Board::takeMove(char player){
         }
     }
     grid[move] = player; //Update grid if the move is valid
+    valid = false;
 }
 
 bool Board::isMoveValid(int move, char player){
@@ -90,7 +99,7 @@ bool Board::isMoveValid(int move, char player){
 bool Board::checkbounds(int move){
     // Takes the move (int) and check if the move is within the boundaries of the grid
     valid_bounds = false;
-    if (0 > move || move > grid_size){
+    if (move < 0 || move > grid_size){
         cout<< "Out of range try again \n";
     }
     else{
@@ -101,7 +110,7 @@ bool Board::checkbounds(int move){
 
 bool Board::check_location(int move, char player){
     // Check if location is occupied. Return true if it is not occupied
-    if (grid[move] == (find(players.begin(), players.end(), grid[move]) != players.end())){
+    if (find(players.begin(), players.end(), grid[move]) != players.end()){
         cout<< "Space full! Pick another space!";
         return false;
     }
@@ -131,6 +140,7 @@ bool Board::check_winner(char player){
     int k = board_size -1;
 
     for (auto const& [key, val] : grid){
+        cout << "Key: " << key<< " Value: " << int(val) << "\n";
         store[i] = val;
         i+=1;
     }
@@ -138,7 +148,7 @@ bool Board::check_winner(char player){
     for (int i=0; i<board_size; i++){
         for (int j=0; j<board_size; j++){
             k+=1;
-            space[i][j] = store[k];
+            space[i][j] = int(store[k]);
             }
     }
     //----------------------------------------------------------
@@ -152,14 +162,14 @@ bool Board::check_winner(char player){
         for (int j=0; j<board_size; j++){
             // Check win by row
             if (win_by_row == true && check_row == true){
-                if (space[j][i] != player) {
+                if (space[i][j] != int(player)) {
                     win_by_row = false;
                     check_row = false;
                 }
             }
             // Check win by column
             if (win_by_column == true && check_column == true){
-                if (space[i][j] != player){
+                if (space[j][i] != int(player)){
                     win_by_column = false;
                     check_column = false;
                 }
@@ -167,30 +177,31 @@ bool Board::check_winner(char player){
         }
         // Check win by diagnol
         if (win_by_diag_1 == true && check_diag_1 == true){
-            if (space[i][i] != player){
+            if (space[i][i] != int(player)){
                 win_by_diag_1 = false;
                 check_diag_1 = false;
             }
         }
 
         if (win_by_diag_2 == true && check_diag_2 == true){
-            if (space[i][k] != player){
+            if (space[i][k] != int(player)){
                 win_by_diag_2 = false;
                 check_diag_2 = false;
             }
         }
         k -= 1;
         if (win_by_row == true || win_by_column == true){
-            printf("WINNNNER \n");
+            printf("Won by row or column \n");
             player_winner = true;
             return player_winner;
         }
     }
 
     if (win_by_diag_1 == true || win_by_diag_2 == true){
-        printf("WINNNNER \n");
+        printf("Won by diagnol \n");
         player_winner = true;
         return player_winner;
     }
-    
+    cout << "YANDI!";
+    return false;
 }

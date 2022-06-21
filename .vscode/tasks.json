@@ -13,7 +13,7 @@
           "-g",
           "${file}",
           "-o",
-          "${Tic_Tac_Toe_Folder}/test.cpp"
+          "${fileDirname}/${fileBasenameNoExtension}"
         ],
         "options": {
           "cwd": "${workspaceFolder}"
