@@ -148,9 +148,8 @@ bool Board::check_winner(char player){
 
     for (int i=0; i<board_size; i++){
         for (int j=0; j<board_size; j++){
-            z+=1;
             space[i][j] = int(store[z]);
-            cout << space[i][j] << "\n";
+            z+=1;
             }
     }
     //----------------------------------------------------------
