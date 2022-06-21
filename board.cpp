@@ -19,6 +19,7 @@ void Board::createGrid(){
     for (int i=0; i<grid_size; i++){
         char c = i;
         grid[i] = c;
+        cout << "Key: " << i << "\n";
     }
 }
 
@@ -40,26 +41,38 @@ void Board::printGameBoard(){
             k+=1;
             }
     }
-    string vertical_lines = "      |      |      \n";
-    string horizantal_lines =  "______|______|______\n";
+    string vertical_line = "        |";
+    string last_vertical = "        \n";
+    string horizantal_line = "________|";
+    string last_horizantal = "________\n";
         for (int i=0; i<board_size; i++){
-            cout<< vertical_lines;
+            for (int k=0; k<board_size-1; k++){
+                cout<< vertical_line;
+            }
+            cout << last_vertical;
             for (int j=0; j<board_size; j++){
                 int output = int(space[i][j]); // No way to print char so converted ascii O and X to strings
                 if (output == 79){
-                    cout<< "   " << 'O' << "   ";
+                    cout<< "    " << 'O' << "    ";
                 }
                 else if (output == 88){
-                    cout<< "   " << 'X' << "   ";
+                    cout<< "    " << 'X' << "    ";
+                }
+                else if (output > 9){
+                    cout<< "   " << output << "    ";
                 }
                 else{
-                    cout<< "   " << output << "   ";
+                    cout<< "    " << output << "    ";
                 }
             }
-            cout << "   \n";
-            cout << horizantal_lines;
+            cout << "     \n";
+            for (int k=0; k<board_size-1; k++){
+                cout<< horizantal_line;
+            }
+            cout << last_horizantal;
         }
-        cout << vertical_lines;
+        cout << vertical_line;
+        cout << last_vertical;
 }
 
 void Board::takeMove(char player){
@@ -99,7 +112,7 @@ bool Board::isMoveValid(int move, char player){
 bool Board::checkbounds(int move){
     // Takes the move (int) and check if the move is within the boundaries of the grid
     valid_bounds = false;
-    if (move < 0 || move > grid_size){
+    if (move < 0 || move >= grid_size){
         cout<< "Out of range try again \n";
     }
     else{
@@ -191,18 +204,19 @@ bool Board::check_winner(char player){
             }
         }
         k -= 1;
+        // Check if won by row or column
         if (win_by_row == true || win_by_column == true){
             printf("Won by row or column \n");
             player_winner = true;
             return player_winner;
         }
     }
-
+    // Check if won by diagnol
     if (win_by_diag_1 == true || win_by_diag_2 == true){
         printf("Won by diagnol \n");
         player_winner = true;
         return player_winner;
     }
-    cout << "YANDI!";
+    cout << "YANDI! \n";
     return false;
 }
