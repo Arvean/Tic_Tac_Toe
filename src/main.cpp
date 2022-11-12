@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
         board.gameover = false;
 
         res.set_header("Content-Type", "text/plain");
-        res.write("Welcome to Tic Tac Toe, here is your board ID " + to_string(board.board_id));
+        res.write(to_string(board.board_id));
         res.end();
         game[board.board_id] = board; //store in map
     });
