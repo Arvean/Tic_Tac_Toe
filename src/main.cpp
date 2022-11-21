@@ -51,7 +51,8 @@ int main(int argc, char* argv[]) {
         }
         else{
             res.set_header("Content-Type", "text/plain");
-            res.write("Player " + it->second.player + " Turn ");
+            //res.write("Player " + it->second.player + " Turn ");
+            res.write(it->second.player);
             res.end();
         }
     });
@@ -68,7 +69,8 @@ int main(int argc, char* argv[]) {
         }
         else{
             res.set_header("Content-Type", "text/plain");
-            res.write("Player : " + it->second.player + ". ");
+            //res.write("Player : " + it->second.player + ". ");
+            res.write(it->second.player);
             pair<bool, string> p = it->second.check_move(move, it->second.board_vector);
             if (p.first == true){
                 it->second.board_vector[move-1] = it->second.player;
