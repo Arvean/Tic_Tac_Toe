@@ -1,0 +1,18 @@
+  useEffect(() => {
+    if (props.square_state=="X") {
+      setSquare_state("X")
+    } else if (props.square_state=="O") {
+      setSquare_state("O")
+    }
+  }
+  )
+
+    const handle_square_click = () => {
+    if (!square_button) {
+      setSquare_button(true)
+      //setSquare_state(props.player)
+      //props.setGetplayer(true)
+      console.log("Move Sent")
+      fetch("http://localhost:4000/TakeMove/" + props.square_ID + "/"+ props.board_ID)
+    }
+  }

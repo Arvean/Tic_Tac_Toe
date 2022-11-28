@@ -46,19 +46,12 @@ std::pair<bool, std::string> Board::check_move(int &move, vector<std::string> &b
     }
 }
 
-std::pair<bool, std::string> Board::check_winner(vector<std::string>  &board_vector, std::string &player) {
+std::pair<bool, std::string> Board::check_winner(vector<std::string>  &board_vector, std::string &player, int &move_counter) {
     // Function to enforce the rules of Tic Tac Toe. Checks if there is a winner
 
     // ------------ Initialize Variables ------------
 
     int board_size = 3;
-    bool win_by_row;
-    bool win_by_column;
-    bool win_by_diag_1;
-    bool win_by_diag_2;
-    bool player_winner;
-    bool check_diag_1 = true;
-    bool check_diag_2 = true;
     int i = 0;
     int j = 0;
     int z = 0;
@@ -95,54 +88,55 @@ std::pair<bool, std::string> Board::check_winner(vector<std::string>  &board_vec
     }
 
     // ------------ Logic ------------
+    bool gameover = false;
+    bool win_by_diag_1 = true;
+    bool win_by_diag_2 = true;
+
+    if (move_counter == 0) {
+        gameover = true;
+    return make_pair(gameover, "Tie Game!");
+    }
 
     for (int i=0; i<board_size; i++){
-        win_by_row = true;
-        win_by_column = true;
-        bool check_row = true;
-        bool check_column = true;
+        bool win_by_row = true;
+        bool win_by_column = true;
 
         for (int j=0; j<board_size; j++){
             // Check win by row
-            if (win_by_row == true && check_row == true){
+            if (win_by_row == true){
                 if (space[i][j] != player_int) {
                     win_by_row = false;
-                    check_row = false;
                 }
             }
             // Check win by column
-            if (win_by_column == true && check_column == true){
+            if (win_by_column == true){
                 if (space[j][i] != player_int){
                     win_by_column = false;
-                    check_column = false;
                 }
             }
         }
-        // Check win by diagnol
-        if (win_by_diag_1 == true && check_diag_1 == true){
+        // Check win by diagonol
+        if (win_by_diag_1 == true){
             if (space[i][i] != player_int){
                 win_by_diag_1 = false;
-                check_diag_1 = false;
             }
         }
-
-        if (win_by_diag_2 == true && check_diag_2 == true){
+        if (win_by_diag_2 == true){
             if (space[i][k] != player_int){
                 win_by_diag_2 = false;
-                check_diag_2 = false;
             }
         }
         k -= 1;
         // Check if won by row or column
         if (win_by_row == true || win_by_column == true){
-            player_winner = true;
-            return make_pair(player_winner, "." + player_output + "Won by row/column");
+            gameover = true;
+            return make_pair(gameover, player_output + " Won by row or column");
         }
     }
-    // Check if won by diagnol
+            // Check if won by diagonol
     if (win_by_diag_1 == true || win_by_diag_2 == true){
-        player_winner = true;
-        return make_pair(player_winner, "." + player_output + "Won by diagnol");
+        gameover = true;
+        return make_pair(gameover, player_output + " Won by diagonol");
     }
-    return make_pair(false,". No Winner Yet");
+    return make_pair(false,"");
 }

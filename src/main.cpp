@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
         board.player_2 = "O";
         board.player = board.player_1;
         board.gameover = false;
+        board.move_counter = board.board_vector.size();
 
         res.set_header("Content-Type", "text/plain");
         res.write(to_string(board.board_id));
@@ -26,7 +27,7 @@ int main(int argc, char* argv[]) {
     });
 
     CROW_ROUTE(app, "/GetBoard/<int>")
-    // Send board to client. No input variable, returns board response in json
+    // Send board to client
     ([&game](int client_board_id){
         auto it = game.find(client_board_id);
         if (it == game.end()){
@@ -81,6 +82,7 @@ int main(int argc, char* argv[]) {
                     it->second.player = "X";
                 }
                 res.write("Valid Move");
+                it->second.move_counter -= 1;
             }
             else {
                 res.write(p.second + "Please try again");
@@ -100,14 +102,14 @@ int main(int argc, char* argv[]) {
         }
         else{
             res.set_header("Content-Type", "text/plain");
-            pair<bool, string> p = it->second.check_winner(it->second.board_vector, it->second.player);
+            pair<bool, string> p = it->second.check_winner(it->second.board_vector, it->second.player, it->second.move_counter);
             if (p.first == true){
                 it->second.gameover = true;
-                res.write("Game is over");
+                res.write("Game is over. ");
             }
             else{
                 it->second.gameover = false;
-                res.write("Game is not over");
+                res.write("Game is not over.");
             }
             res.write(p.second);
             res.end();
