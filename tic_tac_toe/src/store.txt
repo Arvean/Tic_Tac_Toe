@@ -1,18 +1,90 @@
-  useEffect(() => {
-    if (props.square_state=="X") {
-      setSquare_state("X")
-    } else if (props.square_state=="O") {
-      setSquare_state("O")
-    }
-  }
-  )
+    CROW_ROUTE(app, "/NewGame").methods("POST"_method, HTTPMethod::GET)
+    ([&game, &count](crow::request &req){
+        count += 1;
+        if (count == 1) {
+            // First Player
+            // Create Board Object
+            Board board;
+            //auto x = crow::json::load(req.body);
+            //std::string s = x.s();
+            board.store_cookie(req.body);
+            board.player = "X";
+            board.board_id = board.create_board_id();
+            for (int i = 1; i <= 9; i++){
+                std::string s = std::to_string(i);
+                board.board_vector.push_back(s);
+            }
+            // Initialize Variables
+            board.gameover = false;
+            board.move_counter = board.board_vector.size();
+            game[board.board_id] = board;
+            std::vector<crow::json::wvalue> boardIDDebug;
+            boardIDDebug.push_back(to_string(board.board_id));
+            boardIDDebug.push_back("Count" + to_string(count));
+            crow::json::wvalue sendboardIDDebug = boardIDDebug;
+            return crow::response(sendboardIDDebug);
+        }
+        // Second Player and check to see if the name is different than first user
+        else if (count == 2){
+            if (req.body!=game.rbegin()->second.cookie_vector[0]){ // Weird bug where sometimes the latest board is not loaded and a previous board is
+                count = 0; //Reset counter
+                //auto x = crow::json::load(req.body);
+                std::vector<crow::json::wvalue> boardIDDebug;
+                boardIDDebug.push_back(to_string(game.rbegin()->second.board_id));
+                boardIDDebug.push_back(to_string(game.rbegin()->second.cookie_vector.size()));
+                //std::string s = x.s();
+                game.rbegin()->second.store_cookie(req.body);
+                crow::json::wvalue sendboardIDDebug = boardIDDebug;
+                return crow::response(sendboardIDDebug);
+            }
+            else {
+                count = 1;
+                std::vector<crow::json::wvalue> boardIDDebug;
+                boardIDDebug.push_back("error");
+                boardIDDebug.push_back("Count" + to_string(count));
+                crow::json::wvalue sendboardIDDebug = boardIDDebug;
+                return crow::response(sendboardIDDebug);
+            }
+        }
+    });
 
-    const handle_square_click = () => {
-    if (!square_button) {
-      setSquare_button(true)
-      //setSquare_state(props.player)
-      //props.setGetplayer(true)
-      console.log("Move Sent")
-      fetch("http://localhost:4000/TakeMove/" + props.square_ID + "/"+ props.board_ID)
-    }
-  }
+
+    CROW_ROUTE(app, "/NewGame").methods("POST"_method, HTTPMethod::GET)
+    ([&game, &count](request &req, response &res){
+        count += 1;
+        if (count == 1) {
+            // First Player
+            // Create Board Object
+            Board board;
+            board.store_cookie(req.body);
+            board.player = "X";
+            board.board_id = board.create_board_id();
+            for (int i = 1; i <= 9; i++){
+                std::string s = std::to_string(i);
+                board.board_vector.push_back(s);
+            }
+            // Initialize Variables
+            board.gameover = false;
+            board.move_counter = board.board_vector.size();
+            res.set_header("Content-Type", "text/plain");
+            res.write(to_string(board.board_id));
+            res.end();
+            game[board.board_id] = board;
+        }
+        // Second Player and check to see if the name is different than first user
+        else if (count == 2){
+            if (req.body!=game.rbegin()->second.cookie_vector[0]){ // Weird bug where sometimes the latest board is not loaded and a previous board is
+                game.rbegin()->second.store_cookie(req.body);
+                res.set_header("Content-Type", "text/plain");
+                res.write(to_string(game.rbegin()->second.board_id));
+                res.end();
+                count = 0; //Reset counter
+            }
+            else {
+                res.set_header("Content-Type", "text/plain");
+                res.write("error");
+                res.end();
+                count = 1;
+            }
+        }
+    });

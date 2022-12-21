@@ -1,5 +1,15 @@
 #include "Board.h"
 
+void Board::store_cookie(const std::string &cookie){
+    if (cookie_vector.size() == 0 || cookie_vector.size() == 1){
+        cookie_vector.push_back(cookie);
+    }
+    if (cookie_vector.size() == 2) {
+    cookie_map["X"] = cookie_vector[0];
+    cookie_map["O"] = cookie_vector[1];
+    }
+}
+
 int Board::create_board_id(){
     int board_id = rand();
     return board_id;
@@ -47,7 +57,7 @@ std::pair<bool, std::string> Board::check_move(int &move, vector<std::string> &b
 }
 
 std::pair<bool, std::string> Board::check_winner(vector<std::string>  &board_vector, std::string &player, int &move_counter) {
-    // Function to enforce the rules of Tic Tac Toe. Checks if there is a winner
+    // Function to enforce the rules of Tic Tac Toe. Checks if there is a winner. Support variable board size
 
     // ------------ Initialize Variables ------------
 

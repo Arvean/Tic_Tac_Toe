@@ -31,6 +31,9 @@ class Board {
         int board_id;
         int move_counter;
         std::vector<std::string> board_vector;
+        std::vector<std::string> cookie_vector;
+        void store_cookie(const std::string &cookie);
+        unordered_map<std::string, std::string> cookie_map;
 
 };
 
