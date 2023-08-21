@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     int count = 0;
 
     CROW_ROUTE(app, "/NewGame").methods("POST"_method, HTTPMethod::GET)
-    ([&game, &count, &board_ID_vector, &game_waiting_map](const crow::request &req){ //Noob question. Ask Idean about the const crow::request vs request. Won't compile if I don't do const and have crow::response
+    ([&game, &count, &board_ID_vector, &game_waiting_map](const crow::request &req){
         count += 1;
         //auto it = game_waiting_map.find(stoi(req.body));
         //if (it != game_waiting_map.end()) {
