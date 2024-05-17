@@ -11,6 +11,6 @@ Welcome to the repository for a scalable full-stack multiplayer Tic Tac Toe game
 
 ## Technologies Used
 
-**Frontend:** React, HTML, CSS
-**Backend:** Crow C++ Framework
-**APIs:** Custom REST API for game state management
+- **Frontend:** React, HTML, CSS
+- **Backend:** Crow C++ Framework
+- **APIs:** Custom REST API for game state management
